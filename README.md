@@ -17,3 +17,5 @@ node src/server
 To check: `npm run flow`
 
 When adding new dependencies, remember to run `flow-typed install` to get new interface libs.
+
+Or run `npm run flow:coverage` to generate a coverage report
