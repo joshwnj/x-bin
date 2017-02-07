@@ -1,3 +1,5 @@
+//@flow
+
 const redis = require('redis')
 
 module.exports = function () {
