@@ -3,7 +3,9 @@
   "passPerPreset": true,
   "plugins" : [
     "syntax-flow",
-    "tcomb",
+    ["tcomb", {
+      warnOnFailure: true
+    }],
     "transform-flow-strip-types"
   ]
 }
