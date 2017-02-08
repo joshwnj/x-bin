@@ -1,11 +1,11 @@
 //@flow
 
 import { docToHmset, hmgetToDoc } from '../rules/docs'
+import marked from 'marked'
+import { join } from 'path'
 
 import type { $Request, $Response, $Application } from 'express'
 import type { Doc } from '../rules/docs'
-
-const path = require('path')
 
 module.exports = function setup (app: $Application, redisClient: Object) {
   app.get('/admin', (req: $Request, res: $Response) => {
@@ -24,8 +24,8 @@ module.exports = function setup (app: $Application, redisClient: Object) {
 
       const doc = hmgetToDoc(docKeys, values)
 
-      // TODO: render body as markdown, with theme template
-      res.send(JSON.stringify(doc))
+      // TODO: use theme template
+      res.send(marked(doc.body))
     })
   })
 
@@ -53,6 +53,6 @@ module.exports = function setup (app: $Application, redisClient: Object) {
 
   // catchall
   app.get('/*', (req: $Request, res: $Response) => { // eslint-disable-line no-unused-vars
-    res.sendFile(path.join(__dirname, '..', '..', 'dist', 'index.html'))
+    res.sendFile(join(__dirname, '..', '..', 'dist', 'index.html'))
   })
 }
