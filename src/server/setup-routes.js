@@ -1,9 +1,11 @@
 //@flow
 
-const path = require('path')
+import { docToHmset, hmgetToDoc } from '../rules/docs'
 
 import type { $Request, $Response, $Application } from 'express'
 import type { Doc } from '../rules/docs'
+
+const path = require('path')
 
 module.exports = function setup (app: $Application, redisClient: Object) {
   app.get('/admin', (req: $Request, res: $Response) => {
@@ -13,17 +15,14 @@ module.exports = function setup (app: $Application, redisClient: Object) {
   app.get('/doc/:id', (req: $Request, res: $Response) => {
     const id = req.params.id
 
-    redisClient.hmget(`doc:${id}`, [ 'id', 'body', 'authorEmail' ], (err, result:Array<any>) => {
+    const docKeys = [ 'id', 'body', 'authorEmail' ]
+    redisClient.hmget(`doc:${id}`, docKeys, (err: ?Error, values: Array<any>) => {
       if (err) {
         console.error(err)
         return res.send('error')
       }
 
-      const doc:Doc = {
-        id: result[0],
-        body: result[1],
-        authorEmail: result[2]
-      }
+      const doc = hmgetToDoc(docKeys, values)
 
       // TODO: render body as markdown, with theme template
       res.send(JSON.stringify(doc))
@@ -39,11 +38,7 @@ module.exports = function setup (app: $Application, redisClient: Object) {
       authorEmail: user.email
     }
 
-    redisClient.hmset(`doc:${doc.id}`, [
-      'id', doc.id,
-      'body', doc.body,
-      'authorEmail', doc.authorEmail
-    ], (err) => {
+    redisClient.hmset(`doc:${doc.id}`, docToHmset(doc), (err: ?Error) => {
       if (err) {
         console.error(err)
         return res.send('error')
