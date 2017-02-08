@@ -1,3 +1,5 @@
+//@flow
+
 export type Env = {
   // the port that the app http server runs on
   SERVER_PORT: number,
@@ -12,7 +14,7 @@ export type Env = {
   GOOGLE_AUTH_WHITELIST: string
 }
 
-export function normalize (raw: Object):Env {
+export function normalize (raw: {}):Env {
   const env = Object.assign({}, raw, {
     SERVER_PORT: parseInt(raw.SERVER_PORT, 10)
   })

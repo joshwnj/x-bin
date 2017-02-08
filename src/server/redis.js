@@ -1,9 +1,9 @@
 //@flow
 
-const redis = require('redis')
+import redis from 'redis'
 
-module.exports = function () {
-  const client = redis.createClient()
+export default function (): any {
+  const client: any = redis.createClient()
 
   client.on('error', (err: Error) => console.error('[redis] error', err))
 

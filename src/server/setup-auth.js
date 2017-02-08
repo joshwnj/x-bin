@@ -3,7 +3,20 @@
 import { normalizeWhitelist, isEmailInWhitelist } from '../rules/auth'
 
 import type { Env } from '../rules/env'
+import type {
+  Opts as GoogleAuthOpts,
+  Profile as GoogleProfile
+} from '../rules/google-auth'
 import type { $Application } from 'express'
+
+type User = {
+  id: string,
+  token: string,
+  name: string,
+  photo: string,
+  email: string,
+  domain: string
+}
 
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
@@ -19,33 +32,33 @@ passport.deserializeUser((user, done) => {
 module.exports = function (env: Env, app: $Application) {
   const whitelist = normalizeWhitelist(env.GOOGLE_AUTH_WHITELIST)
 
-  const opts = {
+  const opts: GoogleAuthOpts = {
     clientID: env.GOOGLE_CLIENT_ID,
     clientSecret: env.GOOGLE_CLIENT_SECRET,
     callbackURL: env.GOOGLE_CALLBACK_URL
   }
 
-  // Create Google strategy
-  const googleLogin = new GoogleStrategy(opts, (accessToken, refreshToken, profile, done) => { // eslint-disable-line no-unused-vars
-    const user = {}
-
+  type LoginDoneCb = (err: ?Error, user: ?User|boolean, message: any) => void
+  const loginCb = (accessToken: string, refreshToken: string, profile: GoogleProfile, done: LoginDoneCb) => { // eslint-disable-line no-unused-vars
     // store info from the user's google profile
-    user.id = profile.id
-    user.token = accessToken
-    user.name = profile.displayName || `${profile.name.givenName} ${profile.name.familyName}`
-    user.photo = profile.photos[0].value
-    user.email = profile.emails[0].value
-    user.domain = profile._json ? profile._json.domain : 'unknown'
+    const user: User = {
+      id: profile.id,
+      token: accessToken,
+      name: profile.displayName || `${profile.name.givenName} ${profile.name.familyName}`,
+      photo: profile.photos[0].value,
+      email: profile.emails[0].value,
+      domain: (profile._json || {}).domain || 'unknown'
+    }
 
     if (user.id !== null && isEmailInWhitelist(whitelist, user.email)) {
       return done(null, user)
     } else {
       return done(null, false, { message: 'You don\'t have access to the dashboard.' })
     }
-  })
+  }
 
   // tell passport to use google auth
-  passport.use(googleLogin)
+  passport.use(new GoogleStrategy(opts, loginCb))
 
   // tell express to use passport middleware
   app.use(passport.initialize())
@@ -59,7 +72,6 @@ module.exports = function (env: Env, app: $Application) {
 
   // - callback that google auth brings the user back to
   // (need to make sure google is configured with the same route)
-  //app.get(env.GOOGLE_CALLBACK_URL, passport.authenticate('google', {
   app.get('/auth/google/callback', passport.authenticate('google', {
     failureRedirect: '/admin',
     successRedirect: '/admin',
