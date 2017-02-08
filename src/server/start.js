@@ -6,13 +6,14 @@ const RedisStore = require('connect-redis')(session)
 
 import type { Env } from '../rules/env'
 
-module.exports = function (env:Env) {
+module.exports = function (env: Env) {
   // db setup
   const redisClient = require('./redis')()
 
-  // App Setup
+  // app setup
   const app = express()
   app.use(express.static('dist'))
+
   app.use(session({
     resave: true,
     saveUninitialized: true,
@@ -23,8 +24,9 @@ module.exports = function (env:Env) {
     })
   }))
 
+  require('./setup-auth')(env, app)
   require('./setup-routes')(app)
 
-  // Server Setup
+  // http server setup
   const httpServer = app.listen(env.SERVER_PORT)
 }
