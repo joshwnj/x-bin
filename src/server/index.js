@@ -1,2 +1,4 @@
 require('babel-register')
-require('./start')(process.env)
+
+const normalizeEnv = require('../rules/env').normalize
+require('./start')(normalizeEnv(process.env))
