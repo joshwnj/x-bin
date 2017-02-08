@@ -23,8 +23,7 @@ module.exports = function (env:Env) {
     })
   }))
 
-  // define all routes
-  require('./router')(app)
+  require('./setup-routes')(app)
 
   // Server Setup
   const httpServer = app.listen(env.SERVER_PORT)
