@@ -33,3 +33,13 @@ Where possible, modules should export data and functions, as well as documenting
 ## Markdown previews
 
 - set `env.DOC_THEME` to a directory containing theme files
+
+## API
+
+`POST /api/doc`
+
+- create a new doc
+
+`PUT /api/doc/:id`
+
+- update a doc
