@@ -4,15 +4,30 @@ import { join } from 'path'
 import docsRedis from '../rules/docs-redis'
 import { renderDoc } from '../rules/docs'
 
-import type { $Request, $Response, $Application } from 'express'
+import type {
+  $Request,
+  $Response,
+  $Application,
+  NextFunction
+} from 'express'
+
 import type { Doc } from '../rules/docs'
+
+function requireAuth (req: $Request, res: $Response, next: NextFunction) {
+  // If user is authenticated in the session, carry on
+  if (typeof req.isAuthenticated === 'function'
+      && req.isAuthenticated()) { return next() }
+
+  // Otherwise send 401 response
+  res.sendStatus(401)
+}
 
 module.exports = function setup (app: $Application, redisClient: any) {
   app.get('/admin', (req: $Request, res: $Response) => {
     res.send(JSON.stringify(req.user || null))
   })
 
-  app.get('/doc/:id', (req: $Request, res: $Response) => {
+  app.get('/doc/:id', requireAuth, (req: $Request, res: $Response) => {
     const id = req.params.id
 
     docsRedis.findById(id, redisClient, (err: ?Error, doc: ?Doc) => {
@@ -30,7 +45,7 @@ module.exports = function setup (app: $Application, redisClient: any) {
     })
   })
 
-  app.post('/api/doc', (req: $Request, res: $Response) => {
+  app.post('/api/doc', requireAuth, (req: $Request, res: $Response) => {
     const user:any = req.user || {}
     const body:any = req.body || {}
 
