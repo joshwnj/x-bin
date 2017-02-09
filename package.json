@@ -4,6 +4,7 @@
   "description": "Like pastebin, but whitelabeled and more profesh.",
   "main": "index.js",
   "scripts": {
+    "start": "node src/server",
     "flow": "flow check src/",
     "flow:coverage": "flow-coverage-report -i 'src/**/*.js' -t html -t text",
     "lint": "standard src/",
