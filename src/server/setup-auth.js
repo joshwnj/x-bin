@@ -41,13 +41,14 @@ module.exports = function (env: Env, app: $Application) {
   type LoginDoneCb = (err: ?Error, user: ?User|boolean, message: any) => void
   const loginCb = (accessToken: string, refreshToken: string, profile: GoogleProfile, done: LoginDoneCb) => { // eslint-disable-line no-unused-vars
     // store info from the user's google profile
+    const profileJson = profile.__json || { domain: 'unknown' }
     const user: User = {
       id: profile.id,
       token: accessToken,
       name: profile.displayName || `${profile.name.givenName} ${profile.name.familyName}`,
       photo: profile.photos[0].value,
       email: profile.emails[0].value,
-      domain: (profile._json || {}).domain || 'unknown'
+      domain: profileJson.domain
     }
 
     if (user.id !== null && isEmailInWhitelist(whitelist, user.email)) {

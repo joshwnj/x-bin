@@ -1,5 +1,7 @@
 //@flow
 
+import createRedisClient from './setup-redis'
+
 const bodyParser = require('body-parser')
 const express = require('express')
 const session = require('express-session')
@@ -9,7 +11,7 @@ import type { Env } from '../rules/env'
 
 module.exports = function (env: Env) {
   // db setup
-  const redisClient = require('./redis')()
+  const redisClient = createRedisClient()
 
   // app setup
   const app = express()
