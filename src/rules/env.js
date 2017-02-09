@@ -11,7 +11,10 @@ export type Env = {
   GOOGLE_CLIENT_ID: string,
   GOOGLE_CLIENT_SECRET: string,
   GOOGLE_CALLBACK_URL: string,
-  GOOGLE_AUTH_WHITELIST: string
+  GOOGLE_AUTH_WHITELIST: string,
+
+  // optional: directory of theme files for rendering docs
+  DOC_THEME: ?string
 }
 
 // Create an empty Env struct that satisfies the base types.
@@ -24,7 +27,9 @@ function empty ():Env {
     GOOGLE_CLIENT_ID: '',
     GOOGLE_CLIENT_SECRET: '',
     GOOGLE_CALLBACK_URL: '',
-    GOOGLE_AUTH_WHITELIST: ''
+    GOOGLE_AUTH_WHITELIST: '',
+
+    DOC_THEME: ''
   }
 }
 

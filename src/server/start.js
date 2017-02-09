@@ -35,7 +35,7 @@ module.exports = function (env: Env) {
   app.use(flash())
 
   require('./setup-auth')(env, app)
-  require('./setup-routes')(app, redisClient)
+  require('./setup-routes')(env, app, redisClient)
 
   // http server setup
   const httpServer = app.listen(env.SERVER_PORT)

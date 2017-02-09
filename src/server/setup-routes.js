@@ -11,8 +11,13 @@ import type {
   NextFunction
 } from 'express'
 
-import type { Doc } from '../rules/docs'
+import type { Env } from '../rules/env'
 
+import type { Doc, DocTheme } from '../rules/docs'
+
+import type { RedisClient } from './setup-redis'
+
+// Middleware to ensure the user is authenticated before proceeding
 function requireAuth (req: $Request, res: $Response, next: NextFunction) {
   // If user is authenticated in the session, carry on
   if (typeof req.isAuthenticated === 'function'
@@ -22,7 +27,16 @@ function requireAuth (req: $Request, res: $Response, next: NextFunction) {
   res.sendStatus(401)
 }
 
-module.exports = function setup (app: $Application, redisClient: any) {
+function createTheme (themePath: string): DocTheme {
+  return {
+    // TODO: unhardcode
+    tpl: require('../../.theme/tpl.js')
+  }
+}
+
+module.exports = function setup (env: Env, app: $Application, redisClient: RedisClient) {
+  const docTheme = env.DOC_THEME && createTheme(env.DOC_THEME)
+
   app.get('/admin', (req: $Request, res: $Response) => {
     res.send(JSON.stringify(req.user || null))
   })
@@ -41,7 +55,7 @@ module.exports = function setup (app: $Application, redisClient: any) {
       }
 
       // TODO: use theme template
-      res.send(renderDoc(doc))
+      res.send(renderDoc(doc, docTheme))
     })
   })
 
@@ -49,7 +63,7 @@ module.exports = function setup (app: $Application, redisClient: any) {
     const user:any = req.user || {}
     const body:any = req.body || {}
 
-    // TODO: make id optional
+    // TODO: make id optional, and generate one if needed
     const doc:Doc = {
       id: body.id,
       body: body.body,
