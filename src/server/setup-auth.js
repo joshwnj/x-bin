@@ -14,8 +14,7 @@ type User = {
   token: string,
   name: string,
   photo: string,
-  email: string,
-  domain: string
+  email: string
 }
 
 const passport = require('passport')
@@ -41,20 +40,18 @@ module.exports = function (env: Env, app: $Application) {
   type LoginDoneCb = (err: ?Error, user: ?User|boolean, message: any) => void
   const loginCb = (accessToken: string, refreshToken: string, profile: GoogleProfile, done: LoginDoneCb) => { // eslint-disable-line no-unused-vars
     // store info from the user's google profile
-    const profileJson = profile.__json || { domain: 'unknown' }
     const user: User = {
       id: profile.id,
       token: accessToken,
       name: profile.displayName || `${profile.name.givenName} ${profile.name.familyName}`,
       photo: profile.photos[0].value,
-      email: profile.emails[0].value,
-      domain: profileJson.domain
+      email: profile.emails[0].value
     }
 
     if (user.id !== null && isEmailInWhitelist(whitelist, user.email)) {
       return done(null, user)
     } else {
-      return done(null, false, { message: 'You don\'t have access to the dashboard.' })
+      return done(null, false, { message: 'Sorry, you don\'t have access. Contact an admin to join.' })
     }
   }
 
