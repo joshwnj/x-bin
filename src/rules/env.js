@@ -14,10 +14,27 @@ export type Env = {
   GOOGLE_AUTH_WHITELIST: string
 }
 
-export function normalize (raw: {}):Env {
-  const env = Object.assign({}, raw, {
-    SERVER_PORT: parseInt(raw.SERVER_PORT, 10)
-  })
+// Create an empty Env struct that satisfies the base types.
+function empty ():Env {
+  return {
+    SERVER_PORT: 0,
 
-  return env
+    SESSION_SECRET: '',
+
+    GOOGLE_CLIENT_ID: '',
+    GOOGLE_CLIENT_SECRET: '',
+    GOOGLE_CALLBACK_URL: '',
+    GOOGLE_AUTH_WHITELIST: ''
+  }
+}
+
+// Create a populated Env struct,
+// and convert fields to the correct type.
+export function normalize (raw: {}):Env {
+  const conversions = {}
+  if (raw.SERVER_PORT) {
+    conversions.SERVER_PORT = parseInt(raw.SERVER_PORT, 10)
+  }
+
+  return Object.assign(empty(), raw, conversions)
 }
