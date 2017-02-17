@@ -35,7 +35,7 @@ function createTheme (themePath: string): DocTheme {
 }
 
 module.exports = function setup (env: Env, app: $Application, redisClient: RedisClient) {
-  const docTheme = env.DOC_THEME && createTheme(env.DOC_THEME)
+  const docTheme = env.DOC_THEME ? createTheme(env.DOC_THEME) : null
 
   app.get('/admin', (req: $Request, res: $Response) => {
     res.send(JSON.stringify(req.user || null))
