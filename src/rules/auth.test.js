@@ -21,7 +21,7 @@ tape('Auth rules', (t) => {
     t.end()
   })
 
-  t.test('Auth rules: isEmailInWhitelist', (t) => {
+  t.test('isEmailInWhitelist', (t) => {
     t.equal(
       isEmailInWhitelist(['a@a.com', 'b@b.com'], 'a@a.com'),
       true,
@@ -30,6 +30,22 @@ tape('Auth rules', (t) => {
 
     t.equal(
       isEmailInWhitelist(['a@a.com', 'b@b.com'], 'c@c.com'),
+      false,
+      'Negative case'
+    )
+
+    t.end()
+  })
+
+  t.test('Wildcard', (t) => {
+    t.equal(
+      isEmailInWhitelist(['*@somedomain.com'], 'me@somedomain.com'),
+      true,
+      'Positive case'
+    )
+
+    t.equal(
+      isEmailInWhitelist(['*@somedomain.com'], 'me@otherdomain.com'),
       false,
       'Negative case'
     )
