@@ -1,5 +1,6 @@
 //@flow
 
+import { readFileSync } from 'fs'
 import { join } from 'path'
 import docsRedis from '../rules/docs-redis'
 import { renderDoc } from '../rules/docs'
@@ -34,6 +35,9 @@ function createTheme (themePath: string): DocTheme {
   }
 }
 
+
+const tpl = readFileSync(join(__dirname, '..', '..', 'dist', 'index.html'), 'utf8')
+
 module.exports = function setup (env: Env, app: $Application, redisClient: RedisClient) {
   const docTheme = env.DOC_THEME ? createTheme(env.DOC_THEME) : null
 
@@ -47,7 +51,30 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
     docsRedis.findById(id, redisClient, (err: ?Error, doc: ?Doc) => {
       if (err) {
         console.error(err)
-        return res.send('error')
+        return res
+          .status(500)
+          .send('error')
+      }
+
+      // show edit screen
+      const data = {
+        view: 'edit',
+        id,
+        doc
+      }
+      res.send(tpl.replace('<!--content-->', `<script>window.data = ${JSON.stringify(data)}</script>`))
+    })
+  })
+
+  app.get('/api/doc/:id', requireAuth, (req: $Request, res: $Response) => {
+    const id = req.params.id
+
+    docsRedis.findById(id, redisClient, (err: ?Error, doc: ?Doc) => {
+      if (err) {
+        console.error(err)
+        return res
+          .status(500)
+          .send('error')
       }
 
       if (!doc) {
@@ -87,6 +114,6 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
 
   // catchall
   app.get('/*', (req: $Request, res: $Response) => { // eslint-disable-line no-unused-vars
-    res.sendFile(join(__dirname, '..', '..', 'dist', 'index.html'))
+    res.send(tpl)
   })
 }
