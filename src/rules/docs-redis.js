@@ -48,7 +48,7 @@ export function findById (id: string, redisClient: any, cb: (err: ?Error, doc: ?
   const docKeys = [ 'id', 'body', 'authorEmail' ]
   redisClient.hmget(redisKey({ id }), docKeys, (err: ?Error, values: ?Array<any>) => {
     if (err) { return cb(err) }
-    if (!values) { return cb(new Error('not found')) }
+    if (!values || !values[0]) { return cb(null, null) }
 
     return cb(null, hmgetToDoc(docKeys, values))
   })

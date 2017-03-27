@@ -51,7 +51,9 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
       }
 
       if (!doc) {
-        return res.send('not found')
+        return res
+          .status(404)
+          .send('not found')
       }
 
       // TODO: use theme template
