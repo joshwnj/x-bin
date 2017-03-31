@@ -4,7 +4,6 @@ import createRedisClient from './setup-redis'
 
 const bodyParser = require('body-parser')
 const express = require('express')
-const flash = require('connect-flash')
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 
@@ -31,10 +30,7 @@ module.exports = function (env: Env) {
     })
   }))
 
-  // store flash messages in session
-  app.use(flash())
-
-  require('./setup-auth')(env, app)
+  require('express-google-oauth')(env, app)
   require('./setup-routes')(env, app, redisClient)
 
   // http server setup
