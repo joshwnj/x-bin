@@ -43,3 +43,13 @@ blockquote {
 pre {
   background: #EEE;
 }
+
+.action {
+  border: 1px solid #000;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #000;
+  padding: 4px;
+  margin: 4px;
+  cursor: pointer;
+}

@@ -14,7 +14,10 @@ module.exports = function (props) {
 
   return <div>
     <a className="action" href="/#">Home</a>
-    <a className="action" href={`/#edit/${props.id}`}>Edit</a>
-    <div className="editable" dangerouslySetInnerHTML={{ __html: props.content }} />
+    <a className="action" href={`/#doc/${props.id}`}>View</a>
+    <div
+      id="editor"
+      className="editable"
+      dangerouslySetInnerHTML={{ __html: props.content }} />
   </div>
 }

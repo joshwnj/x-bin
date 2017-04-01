@@ -33,22 +33,26 @@ module.exports = React.createClass({
     xhr({
       method: 'post',
       uri: '/api/doc',
-      body: JSON.stringify({
+      json: true,
+      body: {
         id: 'test' + Date.now(),
         content
-      }),
-      headers: {
-        "Content-Type": "application/json"
       }
     }, (err, resp, body) => {
       console.log({err, resp, body})
+      if (err || resp.statusCode !== 200) {
+        alert('Saving failed')
+        return console.error(err || resp)
+      }
+
+      location.hash = `doc/${body.id}`
     })
   },
 
   render: function () {
     return <div>
-      <a href="/#">Back</a>
-      <button onClick={this.save}>Save</button>
+      <a className="action" href="/#">Home</a>
+      <a className="action" onClick={this.save}>Save</a>
       <div id="editor" className="editable"></div>
     </div>
   }
