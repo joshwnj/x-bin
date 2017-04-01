@@ -1,3 +1,14 @@
+web:
+  build: .
+  env_file:
+    - ./docker/web.env
+  ports:
+    - "8000:8000"
+  links:
+    - redis
+  volumes:
+    - .:/usr/src/app
+  working_dir: /usr/src/app
 redis:
   image: redis:3.0.7
   ports:
