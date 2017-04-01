@@ -26,7 +26,6 @@ module.exports = React.createClass({
     // TODO: autosave draft to localstorage every couple of seconds
     // ...
 
-
   },
 
   save: function () {
