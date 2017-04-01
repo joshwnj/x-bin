@@ -30,6 +30,6 @@ module.exports = React.createClass({
   },
 
   render: function () {
-    return <Component {...this.state} />
+    return <Component {...this.state} user={this.props.user} />
   }
 })

@@ -4,7 +4,7 @@ const Create = require('../Create')
 const View = require('../View')
 const Edit = require('../Edit')
 
-module.exports = function (props) {
+function renderRoute (props) {
   if (props.url === 'new') {
     return <Create />
   }
@@ -20,4 +20,21 @@ module.exports = function (props) {
   }
 
   return <a className="action" href="/#new">create</a>
+}
+
+module.exports = function (props) {
+  if (!props.user) {
+    return <div>
+      <a className="action" href="/auth/google">Log in</a>
+    </div>
+  }
+
+  const user = props.user
+  return <div>
+    <div>
+      <img src={user.photo} />
+      wb {user.name}
+    </div>
+    {renderRoute(props)}
+  </div>
 }

@@ -1,6 +1,7 @@
 //@flow
 
 import docRoutes from './docs/routes'
+import tpl from './tpl'
 
 import type {
   $Request,
@@ -16,7 +17,23 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
   docRoutes(env, app, redisClient)
 
   app.get('/admin', (req: $Request, res: $Response) => {
-    res.send(JSON.stringify(req.user || null))
+    res.redirect('/')
+  })
+
+  // index
+  app.get('/', (req: $Request, res: $Response) => { // eslint-disable-line no-unused-vars
+    const data = {}
+
+    const user = req.user
+    if (user) {
+      data.user = {
+        photo: user.photo,
+        name: user.name,
+        email: user.email
+      }
+    }
+
+    res.send(tpl(data))
   })
 
   // catchall

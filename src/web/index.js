@@ -5,6 +5,6 @@ const App = require('./App')
 const appData = global.__app_data || {}
 
 render(
-  <App />,
+  <App user={appData.user} />,
   document.getElementById('root')
 )
