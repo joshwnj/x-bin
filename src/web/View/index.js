@@ -1,5 +1,6 @@
 const React = require('react')
 const xhr = require('xhr')
+const Component = require('./component')
 
 module.exports = React.createClass({
   displayName: 'ViewState',
@@ -14,6 +15,12 @@ module.exports = React.createClass({
 
   componentWillMount: function () {
     this.fetch(this.props.id)
+  },
+
+  componentWillReceiveProps: function (newProps) {
+    if (newProps.id !== this.props.id) {
+      this.fetch(newProps.id)
+    }
   },
 
   fetch: function (id) {
@@ -44,9 +51,6 @@ module.exports = React.createClass({
   },
 
   render: function () {
-    return <div>
-      <a href="/#">Back</a>
-      <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
-    </div>
+    return <Component id={this.props.id} {...this.state} />
   }
 })
