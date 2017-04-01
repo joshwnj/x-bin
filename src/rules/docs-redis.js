@@ -11,7 +11,7 @@ import type {
 function createDoc (): Doc {
   return {
     id: '',
-    body: '',
+    content: '',
     authorEmail: ''
   }
 }
@@ -45,7 +45,7 @@ export function create (doc: Doc, redisClient: any, cb: (err: ?Error) => any) {
 }
 
 export function findById (id: string, redisClient: any, cb: (err: ?Error, doc: ?Doc) => any) {
-  const docKeys = [ 'id', 'body', 'authorEmail' ]
+  const docKeys = [ 'id', 'content', 'authorEmail' ]
   redisClient.hmget(redisKey({ id }), docKeys, (err: ?Error, values: ?Array<any>) => {
     if (err) { return cb(err) }
     if (!values || !values[0]) { return cb(null, null) }

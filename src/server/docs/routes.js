@@ -70,18 +70,18 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
       }
 
       // TODO: use theme template
-      res.send(renderDoc(doc, docTheme))
+      res.send({ ok: true, doc })
     })
   })
 
   app.post('/api/doc', requireAuth, (req: $Request, res: $Response) => {
     const user:any = req.user || {}
-    const body:any = req.body || {}
+    const payload:any = req.body || {}
 
     // TODO: make id optional, and generate one if needed
     const doc:Doc = {
-      id: body.id,
-      body: body.body,
+      id: payload.id,
+      content: payload.content,
       authorEmail: user.email
     }
 

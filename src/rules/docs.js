@@ -4,7 +4,7 @@ import marked from 'marked'
 
 export type Doc = {
   id: string,
-  body: string,
+  content: string,
   authorEmail: string
 }
 
@@ -20,7 +20,7 @@ export type ObjWithId = {
 
 // render a doc as markdown
 export function renderDoc (doc: Doc, theme: ?DocTheme): string {
-  const content = marked(doc.body)
+  const content = marked(doc.content)
 
   // theme is optional, so if there's no theme just return rendered markdown
   if (!theme) { return content }
