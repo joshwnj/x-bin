@@ -6,7 +6,7 @@ Where possible, modules should export data and functions, as well as documenting
 
 ## Auth
 
-- all users must login with google auth
+- all users must login with google auth (via [`express-google-oauth`](https://github.com/x-team/express-google-oauth))
 - set `env.GOOGLE_AUTH_WHITELIST` to a comma-separated list of allowed email addressess
   - can also use a wildcard, eg. `*@yourdomain.com`
 
@@ -18,8 +18,7 @@ Where possible, modules should export data and functions, as well as documenting
 
 - route: `/new`
 - page shows:
-  - textarea for markdown body
-  - markdown preview
+  - richtext editor (via `medium-editor`)
 
 ## Viewing a doc
 
