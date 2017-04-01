@@ -1,0 +1,45 @@
+html {
+  background: #FAFAFA;
+}
+
+#container {
+  max-width: 960px;
+  margin: 30px auto;
+  padding: 0 15px;
+}
+
+.editable {
+  outline: none;
+  min-height: 120px;
+  margin: 0 0 20px 0;
+  padding: 16px;
+
+  background: #FFF;
+  font-family: serif;
+  font-size: 24px;
+}
+
+h1 {
+  font-size: 64px;
+}
+
+h2 {
+  font-size: 32px;
+  line-height: 42px;
+}
+
+h3 {
+  font-size: 26px;
+  line-height: 32px;
+}
+
+blockquote {
+  display: block;
+  border-left: 5px solid #CCC;
+  padding: 0.5em 20px;
+  color: #555;
+}
+
+pre {
+  background: #EEE;
+}
