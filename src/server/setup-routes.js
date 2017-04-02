@@ -20,6 +20,11 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
     res.redirect('/')
   })
 
+  app.post('/auth/logout', (req: $Request, res: $Response) => {
+    req.session.destroy()
+    res.send('ok')
+  })
+
   // index
   app.get('/', (req: $Request, res: $Response) => { // eslint-disable-line no-unused-vars
     const data = {}

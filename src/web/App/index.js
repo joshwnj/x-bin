@@ -1,4 +1,6 @@
 const React = require('react')
+const xhr = require('xhr')
+
 const Component = require('./component')
 const router = require('../router')
 
@@ -29,7 +31,27 @@ module.exports = React.createClass({
     }, 200)
   },
 
+  logout: function () {
+    this.setState({ loading: true })
+
+    xhr({
+      method: 'post',
+      uri: '/auth/logout'
+    }, (err, resp) => {
+      if (err || resp.statusCode !== 200) {
+        console.error(err || resp)
+        alert('Logout failed')
+        return
+      }
+
+      location.href = '/'
+    })
+  },
+
   render: function () {
-    return <Component {...this.state} user={this.props.user} />
+    return <Component
+      {...this.state}
+      user={this.props.user}
+      logout={this.logout} />
   }
 })
