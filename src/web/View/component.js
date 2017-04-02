@@ -1,5 +1,11 @@
 const React = require('react')
 
+const cmz = require('cmz')
+const Atoms = require('../styles/atoms')
+const mod = cmz('Create', {
+  actions: []
+})
+
 module.exports = function (props) {
   if (props.isLoading) {
     return <div>Loading...</div>
@@ -12,9 +18,14 @@ module.exports = function (props) {
     </div>
   }
 
-  return <div>
-    <a className="action" href="/#">Home</a>
-    <a className="action" href={`/#edit/${props.id}`}>Edit</a>
-    <div className="editable" dangerouslySetInnerHTML={{ __html: props.content }} />
+  return <div className={Atoms.mainColumn}>
+    <div className={mod.actions}>
+      <a className={Atoms.button} href="/#">Home</a>
+      <a className={Atoms.button} href={`/#edit/${props.id}`}>Edit</a>
+    </div>
+    <div
+      id="editor"
+      className="editable"
+      dangerouslySetInnerHTML={{ __html: props.content }} />
   </div>
 }

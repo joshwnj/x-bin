@@ -5,6 +5,8 @@ const Create = require('../Create')
 const View = require('../View')
 const Edit = require('../Edit')
 
+const Atoms = require('../styles/atoms')
+
 function renderRoute (props) {
   if (props.loading) {
     return <div>loading</div>
@@ -24,7 +26,9 @@ function renderRoute (props) {
     return <Component id={matches[2]} />
   }
 
-  return <a className="action" href="/#new">create</a>
+  return <div className={Atoms.mainColumn}>
+    <a className={Atoms.button} href="/#new">new</a>
+  </div>
 }
 
 function UserBar (props) {
@@ -36,11 +40,8 @@ function UserBar (props) {
     ],
 
     inner: [
-      'max-width: 960px',
-      'margin: 0 auto',
-      'display: flex',
-      'justify-content: space-between',
-      'align-items: center'
+      Atoms.mainColumn,
+      Atoms.vertCenteredRow
     ],
 
     logo: [
@@ -48,24 +49,13 @@ function UserBar (props) {
       'font-style: italic'
     ],
 
-    actions: [
-      'display: flex',
-      'align-items: center',
-      '& > span { display: flex; align-items: center; }'
-    ],
+    actions: Atoms.vertCenteredRow,
 
     button: [
-      'text-decoration: none',
-      'color: #000',
-      'font-family: sans-serif',
-      'background: #FFF',
-      'padding: .5rem',
-      'margin: .5rem 0',
-      'font-size: .8rem',
-      'text-transform: uppercase',
-      'border: 1px solid #000',
-      'border-radius: .5rem'
+      Atoms.button
     ],
+
+    userInfo: Atoms.vertCenteredRow,
 
     photo: [
       'background: #FFF',
@@ -78,7 +68,7 @@ function UserBar (props) {
 
   const loginButton = <a className={mod.button} href="/auth/google">Log in</a>
   const logoutButton = <button className={mod.button} onClick={props.logout}>Log out</button>
-  const userInfo = props.name && <span>
+  const userInfo = props.name && <span className={mod.userInfo}>
     {props.name}
     <img className={mod.photo} src={props.photo} />
   </span>
