@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.16.0",
+    "cmz": "^2.4.1",
     "connect-redis": "^3.2.0",
     "css-wipe": "^4.2.2",
     "express": "^4.14.1",
