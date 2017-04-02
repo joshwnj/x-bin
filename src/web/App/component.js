@@ -34,7 +34,7 @@ function renderRoute (props) {
 function UserBar (props) {
   const mod = cmz('UserBar', {
     root: [
-      'background: #000',
+      'background: #222',
       'color: #FFF',
       'padding: .5rem'
     ],
@@ -45,6 +45,7 @@ function UserBar (props) {
     ],
 
     logo: [
+      'margin-left: .5rem',
       'font-weight: bold',
       'font-style: italic'
     ],
@@ -52,10 +53,13 @@ function UserBar (props) {
     actions: Atoms.vertCenteredRow,
 
     button: [
-      Atoms.button
+      Atoms.textButton
     ],
 
-    userInfo: Atoms.vertCenteredRow,
+    userInfo: [
+      Atoms.vertCenteredRow,
+      'font-family: "Source Sans Pro", sans-serif'
+    ],
 
     photo: [
       'background: #FFF',

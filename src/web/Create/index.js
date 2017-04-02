@@ -8,6 +8,20 @@ const mod = cmz('Create', {
   actions: []
 })
 
+const defaultContent = `<h2>Heading goes here...</h2>
+
+<p>write something <b><i>here</i></b>
+
+<pre>with {
+  code: 'blocks'
+}</pre>
+
+<ul>
+  <li>and lists
+  <li>and whatever
+</ul>
+`
+
 module.exports = React.createClass({
   displayName: 'CreateState',
 
@@ -32,6 +46,7 @@ module.exports = React.createClass({
     // TODO: autosave draft to localstorage every couple of seconds
     // ...
 
+    this.editor.setContent(defaultContent)
   },
 
   save: function () {
