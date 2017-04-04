@@ -41,6 +41,8 @@ declare class express$Request extends http$IncomingMessage mixins express$Reques
   header(field: string): string | void;
   is(type: string): boolean;
   param(name: string, defaultValue?: string): string | void;
+  user: any;
+  session: any;
 }
 
 declare type express$CookieOptions = {
