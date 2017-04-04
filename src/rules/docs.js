@@ -5,6 +5,8 @@ import marked from 'marked'
 export type Doc = {
   id: string,
   content: string,
+  createdAt: Date,
+  updatedAt: Date,
   authorEmail: string
 }
 

@@ -8,10 +8,20 @@ import type {
   ObjWithId
 } from './docs'
 
+const docKeys = [
+  'id',
+  'content',
+  'createdAt',
+  'updatedAt',
+  'authorEmail'
+]
+
 function createDoc (): Doc {
   return {
     id: '',
     content: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
     authorEmail: ''
   }
 }
@@ -45,7 +55,6 @@ export function create (doc: Doc, redisClient: any, cb: (err: ?Error) => any) {
 }
 
 export function findById (id: string, redisClient: any, cb: (err: ?Error, doc: ?Doc) => any) {
-  const docKeys = [ 'id', 'content', 'authorEmail' ]
   redisClient.hmget(redisKey({ id }), docKeys, (err: ?Error, values: ?Array<any>) => {
     if (err) { return cb(err) }
     if (!values || !values[0]) { return cb(null, null) }

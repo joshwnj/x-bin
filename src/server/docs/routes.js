@@ -79,9 +79,12 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
     const payload:any = req.body || {}
 
     // TODO: make id optional, and generate one if needed
+    const now = new Date
     const doc:Doc = {
       id: payload.id,
       content: payload.content,
+      createdAt: now,
+      updatedAt: now,
       authorEmail: user.email
     }
 
