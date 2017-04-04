@@ -1,5 +1,6 @@
 //@flow
 
+import authorsRedis from '../rules/authors-redis'
 import docRoutes from './docs/routes'
 import tpl from './tpl'
 
@@ -23,8 +24,12 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
       return res.status(404).send('not found')
     }
 
-    const data = ['name', user.name, 'photo', user.photo]
-    redisClient.hmset(`authorByEmail:${user.email}`, data, (err, result) => {
+    const data = {
+      email: user.email,
+      name: user.name,
+      photo: user.photo
+    }
+    authorsRedis.create(data, redisClient, (err, result) => {
       if (err) {
         return res.status(500).send('login failed')
       }
@@ -40,11 +45,10 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
 
   // index
   app.get('/', (req: $Request, res: $Response) => { // eslint-disable-line no-unused-vars
-    const data = {}
-
     const user = req.user
-    if (user) {
-      data.user = {
+    const data = {
+      view: '',
+      user: user && {
         photo: user.photo,
         name: user.name,
         email: user.email

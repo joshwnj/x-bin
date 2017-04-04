@@ -3,8 +3,15 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
+type UserData = {
+  email: string,
+  name: string,
+  photo: string
+}
+
 type AppData = {
-  view: string
+  view: ?string,
+  user: ?UserData
 }
 
 const tpl = readFileSync(join(__dirname, '..', 'tpl.html'), 'utf8')

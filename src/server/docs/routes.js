@@ -1,5 +1,6 @@
 // @flow
 
+import authorsRedis from '../../rules/authors-redis'
 import docsRedis from '../../rules/docs-redis'
 import { renderDoc } from '../../rules/docs'
 import requireAuth from '../require-auth'
@@ -13,6 +14,7 @@ import type {
 } from 'express'
 
 import type { Env } from '../../rules/env'
+import type { Author } from '../../rules/authors'
 import type { Doc, DocTheme } from '../../rules/docs'
 import type { RedisClient } from '../setup-redis'
 
@@ -25,32 +27,6 @@ function createTheme (themePath: string): DocTheme {
 
 module.exports = function setup (env: Env, app: $Application, redisClient: RedisClient) {
   const docTheme = env.DOC_THEME ? createTheme(env.DOC_THEME) : null
-
-  app.get('/new', requireAuth, (req: $Request, res: $Response) => {
-    res.send(tpl({
-      view: 'create'
-    }))
-  })
-
-  app.get('/doc/:id', requireAuth, (req: $Request, res: $Response) => {
-    const id = req.params.id
-
-    docsRedis.findById(id, redisClient, (err: ?Error, doc: ?Doc) => {
-      if (err) {
-        console.error(err)
-        return res
-          .status(500)
-          .send('error')
-      }
-
-      // show edit screen
-      res.send(tpl({
-        view: 'edit',
-        id,
-        doc
-      }))
-    })
-  })
 
   app.get('/api/doc/:id', requireAuth, (req: $Request, res: $Response) => {
     const id = req.params.id
@@ -69,21 +45,13 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
           .send('not found')
       }
 
-      redisClient.hmget(`authorByEmail:${doc.authorEmail}`, ['name', 'photo'], (err, values) => {
-        if (err) { return cb(err) }
-        if (!values || !values[0]) { values = [ null, null ] }
-
-        const author = {
-          email: doc.authorEmail,
-          name: values[0],
-          photo: values[1]
-        }
-
+      const email = doc.authorEmail
+      authorsRedis.findByEmail(email, redisClient, (err: ?Error, author: ?Author) => {
         // TODO: use theme template for markdown docs
         res.send({
           ok: true,
           doc,
-          author
+          author: author || { email }
         })
       })
     })
