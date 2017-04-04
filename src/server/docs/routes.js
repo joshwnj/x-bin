@@ -69,8 +69,23 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
           .send('not found')
       }
 
-      // TODO: use theme template
-      res.send({ ok: true, doc })
+      redisClient.hmget(`authorByEmail:${doc.authorEmail}`, ['name', 'photo'], (err, values) => {
+        if (err) { return cb(err) }
+        if (!values || !values[0]) { values = [ null, null ] }
+
+        const author = {
+          email: doc.authorEmail,
+          name: values[0],
+          photo: values[1]
+        }
+
+        // TODO: use theme template for markdown docs
+        res.send({
+          ok: true,
+          doc,
+          author
+        })
+      })
     })
   })
 
