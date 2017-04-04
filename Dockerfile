@@ -5,10 +5,9 @@ WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app/
 
-RUN npm install
+RUN npm install --production
 
 # copy the source files from host to container
 COPY . /usr/src/app
 
-CMD npm -s run build & \
-  npm -s start
+CMD npm -s start

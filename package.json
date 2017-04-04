@@ -7,7 +7,7 @@
     "copy-static": "mkdir -p dist && cp -r src/web/static/* dist/",
     "prebuild": "npm run copy-static",
     "build": "monobrow",
-    "start": "node src/server",
+    "start": "node -r babel-register src/server",
     "flow": "flow check src/",
     "flow:coverage": "flow-coverage-report -i 'src/**/*.js' -t html -t text",
     "lint": "standard src/",
