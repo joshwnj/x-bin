@@ -45,7 +45,8 @@ module.exports = React.createClass({
 
       this.setState({
         isLoading: false,
-        content: body.doc.content
+        doc: body.doc,
+        author: body.author
       })
     })
   },
