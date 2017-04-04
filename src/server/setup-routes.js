@@ -17,7 +17,20 @@ module.exports = function setup (env: Env, app: $Application, redisClient: Redis
   docRoutes(env, app, redisClient)
 
   app.get('/admin', (req: $Request, res: $Response) => {
-    res.redirect('/')
+    // record user details on login
+    const user = req.user
+    if (!user) {
+      return res.status(404).send('not found')
+    }
+
+    const data = ['name', user.name, 'photo', user.photo]
+    redisClient.hmset(`authorByEmail:${user.email}`, data, (err, result) => {
+      if (err) {
+        return res.status(500).send('login failed')
+      }
+
+      res.redirect('/')
+    })
   })
 
   app.post('/auth/logout', (req: $Request, res: $Response) => {
