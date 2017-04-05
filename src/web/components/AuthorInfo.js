@@ -12,9 +12,9 @@ module.exports = function AuthorInfo (props) {
     ],
 
     photo: [
-      'width: 64px',
-      'height: 64px',
-      'border-radius: 64px',
+      'width: 50px',
+      'height: 50px',
+      'border-radius: 50px',
       'margin-right: 8px'
     ],
 

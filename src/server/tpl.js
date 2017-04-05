@@ -14,7 +14,13 @@ type AppData = {
   user: ?UserData
 }
 
-const tpl = readFileSync(join(__dirname, '..', 'tpl.html'), 'utf8')
+const raw = readFileSync(join(__dirname, '..', 'tpl.html'), 'utf8')
+
+// use minified sources in prod
+const tpl = process.env.NODE_ENV === 'production' ?
+      raw.replace(/(index|vendor)\.js/g, '$1.min.js') :
+      raw
+
 module.exports = function (data: AppData) {
   return tpl.replace('<!--content-->', `<script>window.__app_data = ${JSON.stringify(data)}</script>`)
 }
