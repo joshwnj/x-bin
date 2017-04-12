@@ -32,7 +32,10 @@ app.use(session({
   })
 }))
 
-require('express-google-oauth')(env, app)
+require('express-google-oauth')(app, {
+  whitelist: env.GOOGLE_AUTH_WHITELIST
+})
+
 require('./setup-routes')(env, app, redisClient)
 
 // http server setup

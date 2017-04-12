@@ -34,12 +34,10 @@
     "connect-redis": "^3.2.0",
     "css-wipe": "^4.2.2",
     "express": "^4.14.1",
-    "express-google-oauth": "^1.0.0",
+    "express-google-oauth": "^1.1.0",
     "express-session": "^1.15.0",
     "marked": "^0.3.6",
     "medium-editor": "^5.23.0",
-    "passport": "^0.3.2",
-    "passport-google-oauth": "^1.0.0",
     "redis": "^2.6.5",
     "tcomb": "^3.2.16",
     "xhr": "^2.4.0"
