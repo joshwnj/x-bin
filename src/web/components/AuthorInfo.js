@@ -3,7 +3,14 @@ const React = require('react')
 const cmz = require('cmz')
 const Atoms = require('../styles/atoms')
 
-module.exports = function AuthorInfo (props) {
+type Props = {
+  email: string,
+  name: ?string,
+  photo: ?string,
+  createdAt: Date
+}
+
+module.exports = function AuthorInfo (props: Props) {
   const mod = cmz('AuthorInfo', {
     root: [
       'display: flex',
