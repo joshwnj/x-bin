@@ -1,7 +1,5 @@
 web:
   build: .
-  environment:
-    - NODE_ENV=production
   env_file: ./docker/web.env
   ports:
     - "8000:8000"
