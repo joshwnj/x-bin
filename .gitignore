@@ -3,6 +3,6 @@ node_modules
 npm-debug.log
 babeled
 dist
-docker/web.env
+env/web.env
 flow-coverage
 .bcache.json

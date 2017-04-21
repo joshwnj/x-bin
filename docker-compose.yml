@@ -1,6 +1,6 @@
 web:
   build: .
-  env_file: ./docker/web.env
+  env_file: ./env/web.env
   ports:
     - "8000:8000"
   links:
